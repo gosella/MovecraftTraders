@@ -1,0 +1,6 @@
+name: MovecraftTraders
+main: io.github.gosella.traders.TradersMain
+version: 1.0.0
+commands:
+  merchant:
+    description: Access the Movecraft's Merchants command
