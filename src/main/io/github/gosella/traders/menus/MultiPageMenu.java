@@ -1,5 +1,7 @@
 package io.github.gosella.traders.menus;
 
+import io.github.gosella.traders.menus.items.RadioBoxMenuItem;
+import io.github.gosella.traders.menus.items.ToggleMenuItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 

@@ -1,11 +1,10 @@
-package io.github.gosella.traders.menus;
+package io.github.gosella.traders.menus.items;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RadioBoxMenuItem implements MenuItem {

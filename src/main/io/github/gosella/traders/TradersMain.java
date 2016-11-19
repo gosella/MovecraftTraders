@@ -1,6 +1,10 @@
 package io.github.gosella.traders;
 
-import io.github.gosella.traders.menus.*;
+import io.github.gosella.traders.menus.Menu;
+import io.github.gosella.traders.menus.MenuManager;
+import io.github.gosella.traders.menus.MultiPageMenu;
+import io.github.gosella.traders.menus.SinglePageMenu;
+import io.github.gosella.traders.menus.items.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.bukkit.ChatColor;
@@ -75,7 +79,7 @@ public class TradersMain extends JavaPlugin {
 
         File workbookFile = new File(this.getDataFolder() + "/Merchants.xls");
 
-        FileInputStream inputStream = null;
+        FileInputStream inputStream;
         try {
             inputStream = new FileInputStream(workbookFile);
         } catch (FileNotFoundException e) {
