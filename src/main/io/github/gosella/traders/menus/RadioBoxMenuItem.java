@@ -18,7 +18,10 @@ public class RadioBoxMenuItem implements MenuItem {
     }
 
     public RadioBoxMenuItem(ToggleMenuItem... items) {
-        this.items = new ArrayList<>(Arrays.asList(items));
+        this.items = new ArrayList<>(items.length);
+        for (ToggleMenuItem item : items) {
+            add(item);
+        }
     }
 
     public int size() {
@@ -27,6 +30,12 @@ public class RadioBoxMenuItem implements MenuItem {
 
     public void add(ToggleMenuItem item) {
         items.add(item);
+        if (currentItem == null) {
+            currentItem = item;
+            item.setSelected(true);
+        } else {
+            item.setSelected(false);
+        }
     }
 
     public ToggleMenuItem get(int index) {
@@ -37,8 +46,10 @@ public class RadioBoxMenuItem implements MenuItem {
         if (item == currentItem) {
             return;
         }
-        this.currentItem.setSelected(false);
-        this.currentItem = null;
+        if (currentItem != null) {
+            this.currentItem.setSelected(false);
+            this.currentItem = null;
+        }
         item.setSelected(true);
         this.currentItem = item;
     }
@@ -49,13 +60,8 @@ public class RadioBoxMenuItem implements MenuItem {
 
     @Override
     public void setup(Inventory inventory) {
-        if (!items.isEmpty()) {
-            for (ToggleMenuItem item : items) {
-                item.setup(inventory);
-                item.setSelected(false);
-            }
-            currentItem = items.get(0);
-            currentItem.setSelected(true);
+        for (ToggleMenuItem item : items) {
+            item.setup(inventory);
         }
     }
 

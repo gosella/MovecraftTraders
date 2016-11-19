@@ -47,8 +47,8 @@ public class MenuManager {
             final Player player = (Player) event.getWhoClicked();
             final Menu menu = menus.get(player);
             if (menu != null) {
-                event.setCancelled(true);
                 menu.process(player, event);
+                event.setCancelled(true);
             }
         }
 
