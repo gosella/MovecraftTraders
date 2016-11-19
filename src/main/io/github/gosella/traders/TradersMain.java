@@ -360,21 +360,125 @@ public class TradersMain extends JavaPlugin {
 
         selected = new ItemStack(Material.SLIME_BALL);
         meta = selected.getItemMeta();
-        meta.setDisplayName("Cargo auto-unload");
+        meta.setDisplayName("Cargo Load/Unload");
         selected.setItemMeta(meta);
         unselected = new ItemStack(selected);
         unselected.setType(Material.SNOW_BALL);
-        menu = multiPageMenu.addPage(new ToggleMenuItem(6 * 9 - 3, selected, unselected, true));
+        menu = multiPageMenu.addPage(new ToggleMenuItem(6 * 9 - 2, selected, unselected, true));
+
+        ///// PROOF of CONCEPT  /////
+
+        UpDownMenuItem upDownChests;
+        UpDownMenuItem upDownDispensers;
+        List<String> lore = Arrays.asList(ChatColor.RESET + "Left click is +1", ChatColor.RESET + "Right click is -1");
+        ItemStack upDownTestItem;
+        ItemStack itemStack;
+        ItemMeta upDownTestItemItemMeta;
+
+
+        position = 4 * 9;
+        itemStack = merchant.getItems().get(0).clone();
+        upDownTestItemItemMeta = itemStack.getItemMeta();
+        upDownTestItemItemMeta.setDisplayName("Item to UNLOAD");
+        itemStack.setItemMeta(upDownTestItemItemMeta);
+        StaticMenuItem itemUnload = new StaticMenuItem(position++, itemStack);
+        menu.add(itemUnload);
+
+        upDownChests = new UpDownMenuItem(position++, "Chests to UNLOAD", Material.CHEST, 7);
+        upDownTestItem = upDownChests.getItem();
+        upDownTestItemItemMeta = upDownTestItem.getItemMeta();
+        upDownTestItemItemMeta.setLore(lore);
+        upDownTestItem.setItemMeta(upDownTestItemItemMeta);
+        upDownChests.setUpDownListener((player, event, value) -> {
+            player.sendMessage(ChatColor.BOLD + "Chests: [" + ChatColor.GOLD + value + ChatColor.RESET + "]");
+            return true;
+        });
+        menu.add(upDownChests);
+
+        upDownDispensers = new UpDownMenuItem(position, "Dispensers to UNLOAD", Material.DISPENSER, 2);
+        upDownTestItem = upDownDispensers.getItem();
+        upDownTestItemItemMeta = upDownTestItem.getItemMeta();
+        upDownTestItemItemMeta.setLore(lore);
+        upDownTestItem.setItemMeta(upDownTestItemItemMeta);
+        upDownDispensers.setUpDownListener((player, event, value) -> {
+            player.sendMessage(ChatColor.BOLD + "Dispensers: [" + ChatColor.GOLD + value + ChatColor.RESET + "]");
+            return true;
+        });
+        menu.add(upDownDispensers);
+
+
+
+        position = 4 * 9 + 6;
+        itemStack = new ItemStack(Material.SNOW);
+        upDownTestItemItemMeta = itemStack.getItemMeta();
+        upDownTestItemItemMeta.setDisplayName("Item to LOAD");
+        itemStack.setItemMeta(upDownTestItemItemMeta);
+        StaticMenuItem itemLoad = new StaticMenuItem(position++, itemStack);
+        menu.add(itemLoad);
+
+        upDownChests = new UpDownMenuItem(position++, "Chests to LOAD", Material.CHEST, 7);
+        upDownTestItem = upDownChests.getItem();
+        upDownTestItemItemMeta = upDownTestItem.getItemMeta();
+        upDownTestItemItemMeta.setLore(lore);
+        upDownTestItem.setItemMeta(upDownTestItemItemMeta);
+        upDownChests.setUpDownListener((player, event, value) -> {
+            player.sendMessage(ChatColor.BOLD + "Chests: [" + ChatColor.GOLD + value + ChatColor.RESET + "]");
+            return true;
+        });
+        menu.add(upDownChests);
+
+        upDownDispensers = new UpDownMenuItem(position, "Dispensers to LOAD", Material.DISPENSER, 2);
+        upDownTestItem = upDownDispensers.getItem();
+        upDownTestItemItemMeta = upDownTestItem.getItemMeta();
+        upDownTestItemItemMeta.setLore(lore);
+        upDownTestItem.setItemMeta(upDownTestItemItemMeta);
+        upDownDispensers.setUpDownListener((player, event, value) -> {
+            player.sendMessage(ChatColor.BOLD + "Dispensers: [" + ChatColor.GOLD + value + ChatColor.RESET + "]");
+            return true;
+        });
+        menu.add(upDownDispensers);
+
+
+
+        position = 0;
+        for (MerchantItem merchantItem : merchant.getItems()) {
+            ClickableMenuItem menuItem = new ClickableMenuItem(position++, merchantItem.clone());
+            menuItem.setClickListener((player, event) -> {
+                ItemStack item = itemLoad.getItem();
+                ItemStack currentItem = event.getCurrentItem();
+                if (item.getType() != currentItem.getType()) {
+                    item.setType(currentItem.getType());
+                    itemLoad.update();
+                    player.sendMessage(ChatColor.YELLOW + "Recalculating chests...");
+                }
+                return true;
+            });
+            menu.add(menuItem);
+        }
+
+
+
+        ClickableMenuItem buttonProceed = new ClickableMenuItem(5 * 9, "Proceed!", Material.WOOL);
+        buttonProceed.setClickListener((player, event) -> {
+            player.sendMessage(ChatColor.BOLD + "Unloading: " + itemUnload.getItem().getType() + " / Loading: " + itemLoad.getItem().getType());
+            player.sendMessage(ChatColor.RED + "Proceeding... not!");
+            player.closeInventory();
+            return true;
+        });
+        menu.add(buttonProceed);
+
+
+        ///// END of PROOF of CONCEPT  /////
+
 
         //// JUST TESTING... ////
-
-        ClickableMenuItem buttonTest = new ClickableMenuItem(3 * 9 + 2, "Click Me!", Material.EMERALD);
+/*
+        ClickableMenuItem buttonTest = new ClickableMenuItem(5 * 9 + 2, "Click Me!", Material.EMERALD);
         buttonTest.setClickListener((player, event) -> {
             player.sendMessage(ChatColor.BOLD + "" + ChatColor.GOLD + "Hi!");
             return true;
         });
         menu.add(buttonTest);
-
 
         selected = new ItemStack(Material.DIAMOND);
         meta = selected.getItemMeta();
@@ -386,19 +490,16 @@ public class TradersMain extends JavaPlugin {
         meta.setDisplayName("Bye!");
         unselected.setItemMeta(meta);
 
-        ToggleMenuItem toggleTest = new ToggleMenuItem(3 * 9 + 3, selected, unselected, true);
+        ToggleMenuItem toggleTest = new ToggleMenuItem(5 * 9 + 3, selected, unselected, true);
         buttonTest.setClickListener((player, event) -> {
             player.sendMessage(ChatColor.BOLD + "" + ChatColor.GOLD + "Hi!");
             return true;
         });
         menu.add(toggleTest);
 
-        UpDownMenuItem upDownTest = new UpDownMenuItem(3 * 9 + 4, "Try Me!", Material.CHEST, 7);
-        ItemStack upDownTestItem = upDownTest.getItem();
-        ItemMeta upDownTestItemItemMeta = upDownTestItem.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.RESET + "Left click is +1");
-        lore.add(ChatColor.RESET + "Right click is -1");
+        UpDownMenuItem upDownTest = new UpDownMenuItem(5 * 9 + 4, "Try Me!", Material.CHEST, 7);
+        upDownTestItem = upDownTest.getItem();
+        upDownTestItemItemMeta = upDownTestItem.getItemMeta();
         upDownTestItemItemMeta.setLore(lore);
         upDownTestItem.setItemMeta(upDownTestItemItemMeta);
         upDownTest.setUpDownListener((player, event, value) -> {
@@ -407,7 +508,7 @@ public class TradersMain extends JavaPlugin {
         });
         menu.add(upDownTest);
 
-        upDownTest = new UpDownMenuItem(3 * 9 + 5, "Try Me TOO!", Material.DISPENSER, 2);
+        upDownTest = new UpDownMenuItem(5 * 9 + 5, "Try Me TOO!", Material.DISPENSER, 2);
         upDownTestItem = upDownTest.getItem();
         upDownTestItemItemMeta = upDownTestItem.getItemMeta();
         upDownTestItemItemMeta.setLore(lore);
@@ -417,18 +518,8 @@ public class TradersMain extends JavaPlugin {
             return true;
         });
         menu.add(upDownTest);
-
+*/
         //// END OF TESTS ////
-
-
-        selected = new ItemStack(Material.SLIME_BALL);
-        meta = selected.getItemMeta();
-        meta.setDisplayName("Cargo auto-load");
-        selected.setItemMeta(meta);
-        unselected = new ItemStack(selected);
-        unselected.setType(Material.SNOW_BALL);
-        menu = multiPageMenu.addPage(new ToggleMenuItem(6 * 9 - 2, selected, unselected, true));
-
 
         return multiPageMenu;
     }
