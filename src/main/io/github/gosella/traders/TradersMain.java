@@ -1,7 +1,7 @@
 package io.github.gosella.traders;
 
 import io.github.gosella.traders.menus.*;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -71,16 +73,20 @@ public class TradersMain extends JavaPlugin {
 
         // Open the spreadsheet
 
-        File workbookFile = new File(this.getDataFolder() + "/Merchants.xlsx");
-        if(!workbookFile.exists()) {
+        File workbookFile = new File(this.getDataFolder() + "/Merchants.xls");
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(workbookFile);
+        } catch (FileNotFoundException e) {
             getLogger().warning("Merchants spreadsheet not found!");
             return false;
         }
 
         final Workbook workbook;
         try {
-            workbook = WorkbookFactory.create(workbookFile, null, true);
-        } catch (IOException | InvalidFormatException e) {
+            workbook = new HSSFWorkbook(inputStream);
+        } catch (IOException e) {
             getLogger().warning("Merchants spreadsheet couldn't be read!");
             return false;
         }
