@@ -279,7 +279,7 @@ public class TradersMain extends JavaPlugin {
                         totalAmount += amount;
                         balance += charge;  // TODO: Change for the real thing
                         playerInventory.clear(slot);
-                        player.sendMessage(ChatColor.ITALIC + "Balance += $" + charge);  // TODO: Remove this!
+//                        player.sendMessage(ChatColor.ITALIC + "Balance += $" + charge);  // TODO: Remove this!
                         for(slot = nextSlot; slot < inventorySize; ++slot) {
                             final ItemStack newItem = playerInventory.getItem(slot);
                             if (newItem != null && newItem.isSimilar(item)) {
@@ -301,7 +301,7 @@ public class TradersMain extends JavaPlugin {
                     } else {
                         playerInventory.clear(slot);
                     }
-                    player.sendMessage(ChatColor.ITALIC + "Balance += $" + charge);  // TODO: Remove this!
+//                    player.sendMessage(ChatColor.ITALIC + "Balance += $" + charge);  // TODO: Remove this!
                 }
                 player.sendMessage("Sold " + totalAmount + " items of " + selectedItem.getName() + " for " + (totalAmount * price));
             }
@@ -341,7 +341,7 @@ public class TradersMain extends JavaPlugin {
                     if (amount > 0) {
                         double charge = price * amount;
                         balance -= charge;  // TODO: Change for the real thing
-                        player.sendMessage(ChatColor.ITALIC + "Balance -= $" + charge);  // TODO: Remove this!
+//                        player.sendMessage(ChatColor.ITALIC + "Balance -= $" + charge);  // TODO: Remove this!
                     }
                     totalAmount += amount;
                 } while (fillInventory && leftovers.isEmpty());
