@@ -384,6 +384,7 @@ public class TradersMain extends JavaPlugin {
         itemStack = merchant.getItems().get(0).clone();
         upDownTestItemItemMeta = itemStack.getItemMeta();
         upDownTestItemItemMeta.setDisplayName("Item to UNLOAD");
+        upDownTestItemItemMeta.setLore(null);
         itemStack.setItemMeta(upDownTestItemItemMeta);
         StaticMenuItem itemUnload = new StaticMenuItem(position++, itemStack);
         menu.add(itemUnload);
@@ -416,6 +417,7 @@ public class TradersMain extends JavaPlugin {
         itemStack = new ItemStack(Material.SNOW);
         upDownTestItemItemMeta = itemStack.getItemMeta();
         upDownTestItemItemMeta.setDisplayName("Item to LOAD");
+        upDownTestItemItemMeta.setLore(null);
         itemStack.setItemMeta(upDownTestItemItemMeta);
         StaticMenuItem itemLoad = new StaticMenuItem(position++, itemStack);
         menu.add(itemLoad);
